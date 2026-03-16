@@ -65,7 +65,7 @@ Clone the repository:
 
 ```bash
 git clone https://github.com/Hepher114/guitar-shop-microservices.git
-cd guitar-shop-microservices
+cd guitar-shop-microservices/microservices
 ```
 
 Start the system:

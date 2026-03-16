@@ -1,17 +1,4 @@
 version: "3.9"
-
-# ─── GuitarShop — Local Development Stack ─────────────────────────────────────
-#
-# 10-container application:
-#   5 microservices: ui, catalog, cart, checkout, orders
-#   3 databases:     catalog-db (MySQL), checkout-db (PostgreSQL), orders-db (PostgreSQL)
-#   1 cache:         cart-redis (Redis)
-#   1 messaging:     rabbitmq (RabbitMQ)
-#
-# Usage:
-#   docker compose up --build
-#   Access: http://localhost:8080
-
 networks:
   guitarshop-net:
     driver: bridge
@@ -23,7 +10,6 @@ volumes:
   redis-data:
   rabbitmq-data:
 
-# ─── Common health-check defaults ─────────────────────────────────────────────
 x-healthcheck-defaults: &hc-defaults
   interval: 10s
   timeout: 5s
@@ -31,9 +17,6 @@ x-healthcheck-defaults: &hc-defaults
   start_period: 30s
 
 services:
-
-  # ─── Infrastructure ──────────────────────────────────────────────────────────
-
   catalog-db:
     image: mysql:8.0
     container_name: guitarshop-catalog-db
@@ -108,11 +91,9 @@ services:
       test: ["CMD", "rabbitmq-diagnostics", "ping"]
       <<: *hc-defaults
 
-  # ─── Microservices ────────────────────────────────────────────────────────────
-
   catalog:
     build:
-      context: ./microservices/catalog
+      context: ./catalog
       dockerfile: Dockerfile
     container_name: guitarshop-catalog
     environment:
@@ -133,7 +114,7 @@ services:
 
   cart:
     build:
-      context: ./microservices/cart
+      context: ./cart
       dockerfile: Dockerfile
     container_name: guitarshop-cart
     environment:
@@ -150,7 +131,7 @@ services:
 
   checkout:
     build:
-      context: ./microservices/checkout
+      context: ./checkout
       dockerfile: Dockerfile
     container_name: guitarshop-checkout
     environment:
@@ -174,7 +155,7 @@ services:
 
   orders:
     build:
-      context: ./microservices/orders
+      context: ./orders
       dockerfile: Dockerfile
     container_name: guitarshop-orders
     environment:
@@ -200,7 +181,7 @@ services:
 
   ui:
     build:
-      context: ./microservices/ui
+      context: ./ui
       dockerfile: Dockerfile
     container_name: guitarshop-ui
     environment:
